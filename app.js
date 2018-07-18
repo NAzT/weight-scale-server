@@ -22,9 +22,8 @@ parser.on('data', data => {
   const payload = Buffer.concat([data, Buffer.from('0d0a', 'hex')])
   try {
     parsed = dataParser.parse(payload)
-    //const deviceName = parsed.sensor.device_name.replace(/\0[\s\S]*$/g, '')
-    //parsed.sensor.device_name = deviceName
-    //console.log(`${parsed.sensor.device_name}`)
+    const deviceName = parsed.sensor.device_name.replace(/\0[\s\S]*$/g, '')
+    parsed.sensor.device_name = deviceName
     console.log(`${JSON.stringify(parsed)}`)
     mqttClient1.publish(`NAT/${parsed.sensor.device_name}/status`, JSON.stringify(parsed), {retain: false})
     mqttClient2.publish(`NAT/${parsed.sensor.device_name}/status`, JSON.stringify(parsed), {retain: false})
